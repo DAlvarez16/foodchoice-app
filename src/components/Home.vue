@@ -19,11 +19,14 @@
         </div>
 
         <section class="grid grid-cols-3 gap-[30px]">
-            <div class="flex flex-col justify-center border-[2px] p-[8px] bg-neutral-800/70"
+            <div class="flex flex-col justify-center border-[2px] p-[8px] bg-neutral-800/70" :class="restaurant.adminRecomendation ? 'border-yellow-500' : 'border-white'"
                 v-for="restaurant in filteredRestaurants" :key="restaurant._id">
                 <img :src="restaurant.image == 'no-image' ? '/no-image.jpg' : env.URL_API + 'restaurant/get-image/' + restaurant._id">
                 <div class="flex flex-col gap-[10px]">
-                    <h3 class="font-semibold text-white text-[20px]">{{ restaurant.name }}</h3>
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-white text-[20px]">{{ restaurant.name }}</h3>
+                        <span class="text-yellow-500 text-[16px] font-semibold" v-if="restaurant.adminRecomendation">Super Recomendado</span>
+                    </div>                    
                     <p class="text-white">{{ restaurant.description }}</p>
                     <span class="text-green-400 font-bold">{{ restaurant.restaurantType }}</span>
                     <RouterLink :to="{name: 'restaurant', params: {id: restaurant._id}}" class="bg-blue-400 p-[10px] mx-auto">Ver más</RouterLink>
@@ -43,7 +46,8 @@ export default {
             restaurants: [],
             search: "",
             type: "",
-            env: env
+            env: env,
+            user: null
         };
     },
     computed: {
@@ -62,7 +66,7 @@ export default {
     },
     mounted() {
         this.getRestaurants();
-        console.log(localStorage.getItem("user"))
+        this.user = JSON.parse(localStorage.getItem("user"))
     },
     components: { RouterLink }
 }

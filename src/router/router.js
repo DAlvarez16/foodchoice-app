@@ -12,11 +12,6 @@ const routes = [
     name: 'restaurant'
   },
   {
-    path: "/admin",
-    component: () => import('../components/Admin.vue'),
-    name: 'admin'
-  },
-  {
     path: "/login",
     component: () => import('../components/Login.vue'),
     name: 'login'
@@ -31,6 +26,16 @@ const routes = [
     component: () => import('../components/RestaurantPerfil.vue'),
     name: 'restaurant-profile'
   },
+  {
+    path: "/admin",
+    component: () => import('../components/LoginAdmin.vue'),
+    name: 'admin-login'
+  },
+  /* {
+    path: "/admin-profile",
+    component: () => import('../components/AdminProfile.vue'),
+    name: 'admin-profile'
+  }, */
 ]
 
 const router = createRouter({

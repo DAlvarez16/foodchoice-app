@@ -185,7 +185,6 @@ export default {
 
                 } else {
                     const res = await this.registeruser()
-                    console.log(res)
                     if (res.code == 201) {
                         this.$swal.fire({
                             position: 'center',
@@ -241,7 +240,6 @@ export default {
                     password: this.user.password
                 }
             )
-            console.log(res)
             return res.data
 
         }

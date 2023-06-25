@@ -8,7 +8,7 @@
                 <font-awesome-icon icon="fa-solid fa-user" class="text-white text-[22px]"></font-awesome-icon>
                 <span class="text-white text-[22px]">{{ user.username }}</span>
                 <div class="absolute top-[60px] bg-black/80 flex flex-col gap-[10px] w-[150px]" :class="menu ? '' : 'hidden'" @mouseleave="menu=false">
-                    <button class="text-white font-semibold hover:cursor-pointer hover:bg-white hover:text-black p-[20px]" @click="goToLogin">Perfil</button>
+                    <button class="text-white font-semibold hover:cursor-pointer hover:bg-white hover:text-black p-[20px]" @click="goToPerfil">Perfil</button>
                     <button class="text-white font-semibold hover:cursor-pointer hover:bg-white hover:text-black p-[20px]" @click="logout">Cerrar sesión</button>
                 </div>
             </div>
@@ -36,6 +36,11 @@ export default{
         logout(){
             localStorage.removeItem("user")
             window.location.href = "/login"
+        },
+        goToPerfil(){
+            if(this.user.userType == 'Restaurante'){                
+                this.$router.push({name: 'restaurant-profile', params: {id: this.user._id}})
+            }
         }
     },
     mounted(){
