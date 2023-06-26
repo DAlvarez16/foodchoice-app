@@ -1,9 +1,9 @@
 <template>
-    <main class="max-w-[1200px] bg-black/80 p-[50px] mx-auto mt-[20px] flex flex-col gap-[20px] items-center"
+    <main class="max-w-[1200px] bg-black/80 p-[50px] mx-auto my-[20px] flex flex-col gap-[20px] items-center"
         v-if="restData">
         <div class="flex flex-col gap-[20px] items-center justify-center">
             <img :src="restData.image == 'no-image' ? '/no-image.jpg' : env.URL_API + 'restaurant/get-image/' + restData._id"
-            class="w-[200px] rounded-full">
+                class="w-[200px] rounded-full">
             <input type="file" name="file0" id="file0" class="text-white" accept="image/png image/jpg"
                 @change="handleFileChange">
             <button v-if="image" class="text-white border-[1px] rounded-[10px] p-[10px] hover:text-black hover:bg-white"
@@ -71,6 +71,8 @@
             <button type="submit"
                 class="w-full p-[20px] text-white border-[1px] border-white hover:bg-white hover:text-black"
                 @click="handleSubmit">Actualizar informacion</button>
+            <button class="w-full p-[20px] text-white border-[1px] border-white hover:bg-white hover:text-black"
+                @click="deleteRestaurant">Borrar cuenta</button>
         </form>
     </main>
 </template>
@@ -184,6 +186,35 @@ export default {
                 })
             }
         },
+        deleteRestaurant(e) {
+            e.preventDefault()
+            this.$swal.fire({
+                title: '¿Estas seguro que deseas borrar tu cuenta?',
+                text: "Una vez confirmes, tus datos se borraran y no podran ser recuperados",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Si, borralo!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const res = await axios.delete(env.URL_API + "restaurant/delete/" + this.$route.params.id)
+                    if (res.data.code == 200) {
+                        this.$swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: res.data.msg,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            localStorage.removeItem("user")
+                            window.location.href = "/"
+                        })
+                    }
+                }
+            })
+        }
     },
 
     mounted() {

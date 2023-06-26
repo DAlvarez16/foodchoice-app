@@ -31,11 +31,6 @@ const routes = [
     component: () => import('../components/LoginAdmin.vue'),
     name: 'admin-login'
   },
-  /* {
-    path: "/admin-profile",
-    component: () => import('../components/AdminProfile.vue'),
-    name: 'admin-profile'
-  }, */
 ]
 
 const router = createRouter({
@@ -43,16 +38,20 @@ const router = createRouter({
   routes: routes
 })
 
-
-/* router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('user');
-
-  if (to.path === '/login' || to.path === '/register') {
-    // Si el usuario está autenticado y trata de acceder a /login o /register, redirigir al perfil del usuario
-    if (isAuthenticated) {
-      next('/');
+router.beforeEach((to, from) => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (to.name !== 'restaurant-profile' && (user && user.userType == 'Restaurante')) {
+    return {
+      name: 'restaurant-profile',
+      params: {
+        id: user._id
+      }
+    }
+  }else if(user && (to.name == 'login' || to.name == 'register' || to.name == 'admin-login')){
+    return {
+      name: 'home'
     }
   }
-}); */
+});
 
 export default router

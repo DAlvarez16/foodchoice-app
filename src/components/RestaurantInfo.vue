@@ -2,9 +2,11 @@
     <main
         class="flex justify-center items-center p-[50px] bg-black/70 border-[1px] max-w-[1200px] mx-auto my-[30px] gap-[20px] rounded-[15px]"
         v-if="restaurant">
-        <div class="flex flex-col w-[80%] gap-[50px]">
+        <div class="flex flex-col w-[80%] gap-[30px]">
             <h2 class="text-center text-[28px] text-white font-bold">{{ restaurant.name }}</h2>
             <p class="text-white text-[20px]">{{ restaurant.description }}</p>
+            <p class="text-white text-[20px]">Direccion: <span class="text-green-300">{{ restaurant.address }}</span></p>
+            <p class="text-white text-[20px]">Telefono: <span class="text-green-300">{{ restaurant.phone }}</span></p>
             <span class="text-white font-semibold text-[25px] text-center">
                 Valorar
                 <span class="" v-for="x in 5" :class="{ 'text-yellow-500': x <= rating }">
