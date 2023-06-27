@@ -26,7 +26,7 @@
                     class="w-full p-[20px] text-white border-[1px] border-white hover:bg-white hover:text-black"
                     @click="handleSubmit">Iniciar sesión</button>
                 <div class="text-white">
-                    ¿No tiene una cuenta? <a href="#register-client" class="underline">Registrarse</a>
+                    ¿No tiene una cuenta? <RouterLink :to="{name: 'register'}">Registrate</RouterLink>
                 </div>
             </form>
         </div>
@@ -36,133 +36,138 @@
 <script>
 import axios from 'axios';
 import env from '../environment'
-
+import { RouterLink } from 'vue-router';
 export default {
     data() {
         return {
             typee: "",
             username: "",
             password: ""
-
-        }
+        };
     },
     methods: {
         async loginRestaurant() {
-            const res = await axios.post(env.URL_API + "restaurant/sign-in", { username: this.username, password: this.password })
-            return res.data
+            const res = await axios.post(env.URL_API + "restaurant/sign-in", { username: this.username, password: this.password });
+            return res.data;
         },
         async loginclient() {
-            const res = await axios.post(env.URL_API + "client/sign-in", { username: this.username, password: this.password })
-            return res.data
+            const res = await axios.post(env.URL_API + "client/sign-in", { username: this.username, password: this.password });
+            return res.data;
         },
-
         async handleSubmit(e) {
-            e.preventDefault()
-            if (this.typee == '') {
+            e.preventDefault();
+            if (this.typee == "") {
                 return this.$swal.fire({
-                    icon: 'warning',
-                    title: 'Oops...',
-                    text: 'Selecciona un tipo de usuario',
-                })
+                    icon: "warning",
+                    title: "Oops...",
+                    text: "Selecciona un tipo de usuario",
+                });
             }
             if (this.typee == "restaurante") {
                 if (this.username == "" || this.password == "") {
                     this.$swal.fire({
-                        icon: 'warning',
-                        title: 'Oops...',
-                        text: 'No puedes dejar campos en blanco',
-                    })
-                } else {
-                    const res = await this.loginRestaurant()
+                        icon: "warning",
+                        title: "Oops...",
+                        text: "No puedes dejar campos en blanco",
+                    });
+                }
+                else {
+                    const res = await this.loginRestaurant();
                     if (res.code == 200) {
                         this.$swal.fire({
-                            position: 'center',
-                            icon: 'success',
+                            position: "center",
+                            icon: "success",
                             title: res.msg,
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            localStorage.setItem("user", JSON.stringify(res.restaurant))
-                            window.location.href = "/restaurant-profile/"+res.restaurant._id
-                        })
-                    } else if (res.code == 404) {
-                        this.$swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: 'Usuario o constraseña incorrectos',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    } else if (res.code == 401) {
-                        this.$swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: 'Usuario o constraseña incorrectos',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                            localStorage.setItem("user", JSON.stringify(res.restaurant));
+                            window.location.href = "/restaurant-profile/" + res.restaurant._id;
+                        });
                     }
-
+                    else if (res.code == 404) {
+                        this.$swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "Usuario o constraseña incorrectos",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                    else if (res.code == 401) {
+                        this.$swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "Usuario o constraseña incorrectos",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
                     else {
                         this.$swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: 'Ha ocurrido un error',
+                            position: "center",
+                            icon: "error",
+                            title: "Ha ocurrido un error",
                             showConfirmButton: false,
                             timer: 1500
-                        })
+                        });
                     }
                 }
-            } else {
+            }
+            else {
                 if (this.username == "" || this.password == "") {
                     this.$swal.fire({
-                        icon: 'warning',
-                        title: 'Oops...',
-                        text: 'No puedes dejar campos en blanco',
-                    })
-                } else {
-                    const res = await this.loginclient()
+                        icon: "warning",
+                        title: "Oops...",
+                        text: "No puedes dejar campos en blanco",
+                    });
+                }
+                else {
+                    const res = await this.loginclient();
                     if (res.code == 200) {
                         this.$swal.fire({
-                            position: 'center',
-                            icon: 'success',
+                            position: "center",
+                            icon: "success",
                             title: res.msg,
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            localStorage.setItem("user", JSON.stringify(res.client))
-                            window.location.href = "/"
-                        })
-                    } else if (res.code == 404) {
+                            localStorage.setItem("user", JSON.stringify(res.client));
+                            window.location.href = "/";
+                        });
+                    }
+                    else if (res.code == 404) {
                         this.$swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: 'Usuario o constraseña incorrectos',
+                            position: "center",
+                            icon: "error",
+                            title: "Usuario o constraseña incorrectos",
                             showConfirmButton: false,
                             timer: 1500
-                        })
-                    } else if (res.code == 401) {
+                        });
+                    }
+                    else if (res.code == 401) {
                         this.$swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: 'Usuario o constraseña incorrectos',
+                            position: "center",
+                            icon: "error",
+                            title: "Usuario o constraseña incorrectos",
                             showConfirmButton: false,
                             timer: 1500
-                        })
-                    } else {
+                        });
+                    }
+                    else {
                         this.$swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: 'Ha ocurrido un error',
+                            position: "center",
+                            icon: "error",
+                            title: "Ha ocurrido un error",
                             showConfirmButton: false,
                             timer: 1500
-                        })
+                        });
                     }
                 }
             }
         }
-
-    }
+    },
+    components: { RouterLink }
 }
 </script>
 
